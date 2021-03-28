@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5433"
+    volumes:
+      - myOnCare-db:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+    #this will restart node.js server inside container at each file change
+    command: ["npm", "run", "start:dev"]
+    
+
+volumes:
+  myOnCare-db:
